@@ -1,0 +1,23 @@
+name: AoWPlugin
+main: paragasu.arenaofwolves.aowplugin.AoWPlugin
+version: 1.0
+commands:
+  sw:
+    description: This is a command summoning a wolf.
+    usage: /<command> [str] [con] [int] [dex]
+    permission: aowplugin.sw
+    permission-message: You don't have <permission>
+  worldname:
+    description: test
+    usage: /<command>
+    permission: aowplugin.test
+    permission-message: sine
+  test:
+    usage: /<command>
+    permission: aowplugin.test
+    permission-message: sine
+permissions:
+  aowplugin.sw:
+    default: true
+  aowplugin.test:
+    default: op
