@@ -20,7 +20,7 @@ public class SetWolfTypeOfPlayerSystem implements Listener {
 				Sign sign = (Sign) event.getClickedBlock().getState();
 				WolfType wolfType = null;
 				if(sign.getLine(1).contains("Wyatt")) {
-					wolfType = WolfType.Wyatt;
+					wolfType = WolfType.WYATT;
 				}
 				if(wolfType != null) {
 					player.setMetadata("wolftype", new FixedMetadataValue(new AoWPlugin(), wolfType));

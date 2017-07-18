@@ -26,7 +26,7 @@ public class SummonCommandExcutor implements CommandExecutor {
 				if(args.length == 6) {
 					Player player = (Player) sender;
 					String wolfTypeName = args[0];
-					WolfType wolfType = AoWAPI.getWolfTypeFromString(wolfTypeName);
+					WolfType wolfType = WolfType.WYATT;
 					if(wolfType == null) {
 						sender.sendMessage(ChatColor.RED + "エラー " +wolfTypeName + "は見つかりませんでした");
 						return true;

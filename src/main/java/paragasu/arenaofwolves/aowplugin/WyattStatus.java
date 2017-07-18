@@ -8,7 +8,7 @@ import org.bukkit.entity.Wolf;
 public class WyattStatus extends FightingWolf {
 
 	public WyattStatus(Player owner, Wolf wolf, ArrayList<Integer> allocatedPoints) {
-		super(owner, wolf, WolfType.Wyatt, allocatedPoints);
+		super(owner, wolf, WolfType.WYATT, allocatedPoints);
 	}
 
 	@Override

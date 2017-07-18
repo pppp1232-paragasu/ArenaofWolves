@@ -56,7 +56,7 @@ public class FightingWolf {
 				this.setWolfStatsValue(300, 100, 50, 30, 5, 100, 30, 0);
 				break;
 
-			case Wyatt:
+			case WYATT:
 				this.setWolfStatsValue(200, 10, 20, 10, 5, 100, 0, 0);
 		}
 	}
