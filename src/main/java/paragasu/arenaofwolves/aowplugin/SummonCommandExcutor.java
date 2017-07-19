@@ -28,7 +28,7 @@ public class SummonCommandExcutor implements CommandExecutor {
 					String wolfTypeName = args[4];
 					WolfType wolfType = WolfType.WYATT;
 					if(wolfType == null) {
-						sender.sendMessage(ChatColor.RED + "エラー " +wolfTypeName + "は見つかりませんでした");
+						AoWAPI.sendGameMessage(player, ChatColor.RED + "エラー：" +wolfTypeName + "は見つかりませんでした");
 						return true;
 					}
 					this.allocatedPoints = new ArrayList<Integer>();
@@ -38,36 +38,41 @@ public class SummonCommandExcutor implements CommandExecutor {
 							this.allocatedPoints.add(Integer.parseInt(s)); //NullPointerException
 						}
 						else{
-							sender.sendMessage(ChatColor.RED + "エラー 正しく数値を入力してください");
+							AoWAPI.sendGameMessage(player, ChatColor.RED + "エラー：正しく数値を入力してください");
 							return true;
 						}
 					}
 					for(int i : this.allocatedPoints) {
 						if(i > 30) {
-							sender.sendMessage(ChatColor.RED + "エラー 1つのステータスには30までしか割り振れません");
+							AoWAPI.sendGameMessage(player, ChatColor.RED + "エラー：つのステータスには30までしか割り振れません");
 							return true;
 						}
 					}
 					int sum = allocatedPoints.get(0) + allocatedPoints.get(1) + allocatedPoints.get(2) + allocatedPoints.get(3);
 					if(sum > 60) {
-						sender.sendMessage(ChatColor.RED + "エラー 割り振られたポイントの合計が60を超えています");
+						AoWAPI.sendGameMessage(player, ChatColor.RED + "エラー：割り振られたポイントの合計が60を超えています");
 						return true;
 					}
 					else if(sum < 60) {
-						sender.sendMessage(ChatColor.YELLOW + "確認 割り振られたポイントの合計が60未満です。");
+						AoWAPI.sendGameMessage(player, ChatColor.YELLOW + "確認：割り振られたポイントの合計が60未満です。");
 					}
 					Wolf wolf = (Wolf) player.getWorld().spawnEntity(player.getLocation(), EntityType.WOLF);
 					FightingWolf fightingWolf = new FightingWolf(player, wolf, wolfType, allocatedPoints);
 					FightingWolf.fightingWolfSet.add(fightingWolf);
 					sender.sendMessage(ChatColor.AQUA + "オオカミの召喚に成功しました");
+					String str = String.format("%2s", String.valueOf(fightingWolf.strength));
+					String con = String.format("%2s", String.valueOf(fightingWolf.constitution));
+					String inte = String.format("%2s", String.valueOf(fightingWolf.intelligence));
+					String dex = String.format("%2s", String.valueOf(fightingWolf.dexterity));
+
 					StringBuilder sb = new StringBuilder();
-					sb.append(ChatColor.GREEN).append("=====================").append("\n")
-							.append(fightingWolf.getWolfType().getTypeName()).append("\n")
-							.append(ChatColor.RED).append("STR ").append(ChatColor.GOLD).append("CON ")
-							.append(ChatColor.LIGHT_PURPLE).append("INT ").append(ChatColor.BLUE).append("DEX").append("\n")
-							.append(fightingWolf.strength).append(" ").append(fightingWolf.constitution).append(" ")
-							.append(fightingWolf.intelligence).append(" ").append(fightingWolf.dexterity).append("\n")
-							.append(ChatColor.GREEN).append("=====================");
+					sb.append(ChatColor.GREEN).append("====================").append("\n")
+							.append(" ").append(fightingWolf.getWolfType().getColoredName()).append("\n")
+							.append("  ").append(ChatColor.RED).append(ChatColor.BOLD).append("STR   ").append(str).append("\n")
+							.append("  ").append(ChatColor.GOLD).append(ChatColor.BOLD).append("CON   ").append(con).append("\n")
+							.append("  ").append(ChatColor.LIGHT_PURPLE).append(ChatColor.BOLD).append("INT   ").append(inte).append("\n")
+							.append("  ").append(ChatColor.DARK_AQUA).append(ChatColor.BOLD).append("DEX   ").append(dex).append("\n")
+							.append(ChatColor.GREEN).append("====================");
 					sender.sendMessage(sb.toString()); //召喚したオオカミの情報を表示する
 					return true;
 				}
