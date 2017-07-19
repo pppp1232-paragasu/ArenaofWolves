@@ -91,7 +91,7 @@ public class WolfBattleSystem implements Listener{
 				FightingWolf.fightingWolfSet.remove(fightingWolf);
 			}
 			else{
-				Bukkit.broadcastMessage("AoWWolfクラスonWolfDieメソッド nullremoveエラー");
+				Bukkit.broadcastMessage("WolfBattleSystemクラスonWolfDieメソッド nullremoveエラー");
 			}
 		}
 	}

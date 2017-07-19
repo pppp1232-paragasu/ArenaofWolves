@@ -23,16 +23,16 @@ public class SummonCommandExcutor implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if(command.getName().equalsIgnoreCase("sw") || command.getName().equalsIgnoreCase("summonwolf")) {
 			if(sender instanceof Player) {
-				if(args.length == 6) {
+				if(args.length == 5) {
 					Player player = (Player) sender;
-					String wolfTypeName = args[0];
+					String wolfTypeName = args[4];
 					WolfType wolfType = WolfType.WYATT;
 					if(wolfType == null) {
 						sender.sendMessage(ChatColor.RED + "エラー " +wolfTypeName + "は見つかりませんでした");
 						return true;
 					}
 					this.allocatedPoints = new ArrayList<Integer>();
-					for(int i = 1; i < 6; i++) {
+					for(int i = 0; i < 4; i++) {
 						String s = args[i];
 						if(s.matches("\\d+")) {
 							this.allocatedPoints.add(Integer.parseInt(s)); //NullPointerException
@@ -60,7 +60,15 @@ public class SummonCommandExcutor implements CommandExecutor {
 					FightingWolf fightingWolf = new FightingWolf(player, wolf, wolfType, allocatedPoints);
 					FightingWolf.fightingWolfSet.add(fightingWolf);
 					sender.sendMessage(ChatColor.AQUA + "オオカミの召喚に成功しました");
-					sender.sendMessage(fightingWolf.getWolfType() + " " ); //召喚したオオカミの情報を表示する
+					StringBuilder sb = new StringBuilder();
+					sb.append(ChatColor.GREEN).append("=====================").append("\n")
+							.append(fightingWolf.getWolfType().getTypeName()).append("\n")
+							.append(ChatColor.RED).append("STR ").append(ChatColor.GOLD).append("CON ")
+							.append(ChatColor.LIGHT_PURPLE).append("INT ").append(ChatColor.BLUE).append("DEX").append("\n")
+							.append(fightingWolf.strength).append(" ").append(fightingWolf.constitution).append(" ")
+							.append(fightingWolf.intelligence).append(" ").append(fightingWolf.dexterity).append("\n")
+							.append(ChatColor.GREEN).append("=====================");
+					sender.sendMessage(sb.toString()); //召喚したオオカミの情報を表示する
 					return true;
 				}
 			}
