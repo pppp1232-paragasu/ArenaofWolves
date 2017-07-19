@@ -40,7 +40,7 @@ public class WolfBattleSystem implements Listener{
 		int aCritChance = aFightingWolf.getCritChance();
 		int aCritDamage = aFightingWolf.getCritDamage();
 		int vHitPoints = vFightingWolf.getHitPoints();
-		int vShield = vFightingWolf.getHitPoints();
+		int vShield = vFightingWolf.getShield();
 		int damagePoints = 0;
 		Wolf attacker = aFightingWolf.getWolf();
 		Wolf victim = vFightingWolf.getWolf();
@@ -75,7 +75,7 @@ public class WolfBattleSystem implements Listener{
 			vHitPoints = 0;
 			victim.setHealth(0);
 		}else{
-			victim.setHealth(victim.getHealth());
+			victim.setHealth(victim.getMaxHealth());
 		}
 		vFightingWolf.setHitPoints(vHitPoints);
 		Bukkit.broadcastMessage("HP " + String.valueOf(vFightingWolf.getHitPoints()));

@@ -7,7 +7,7 @@ import java.util.Iterator;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 
-public class FightingWolf {
+public abstract class FightingWolf {
 	public static HashSet<FightingWolf> fightingWolfSet = new HashSet<FightingWolf>();
 
 	protected Wolf wolf;
@@ -31,56 +31,26 @@ public class FightingWolf {
 	protected int shield = 0;
 
 
-	public FightingWolf(Player owner, Wolf wolf, WolfType wolfType, ArrayList<Integer> allocatedPoints) {
+	public FightingWolf(Player owner, Wolf wolf, ArrayList<Integer> allocatedPoints) {
 		this.owner = owner;
 		this.wolf = wolf;
-		this.wolfType = wolfType;
 		this.strength = allocatedPoints.get(0);
 		this.constitution = allocatedPoints.get(1);
 		this.intelligence = allocatedPoints.get(2);
 		this.dexterity = allocatedPoints.get(3);
-		this.setWolfBaseStats(this.wolfType);
 		this.setWolfStats(strength, constitution, intelligence, dexterity);
 		fightingWolfSet.add(this);
 	}
 
-
-	// HP ATK DEF CRT ACC EVA SPD
-	private void setWolfBaseStats(WolfType wolfType) {
-		switch(wolfType){
-			case NORMAL:
-				this.setWolfStatsValue(300, 60, 70, 0, 0, 100, 0, 0);
-				break;
-
-			case TEST:
-				this.setWolfStatsValue(300, 100, 50, 30, 5, 100, 30, 0);
-				break;
-
-			case WYATT:
-				this.setWolfStatsValue(200, 10, 20, 10, 5, 100, 0, 0);
-		}
-	}
-
 	private void setWolfStats(int str, int con, int inte, int dex) {
-		int atk = this.attack + str;
-		int critD = this.critDamage + str / 4;
-		int hp = this.hitPoints + con * 10;
-		int def = (int) (this.defence + con * 0.6);
-		int mp = this.magicPower + inte;
-		int acc = this.accuracy + dex;
-		int eva = this.evasion + dex / 2;
-		int critC = this.critChance + dex / 2;
-		this.setWolfStatsValue(hp, atk, def, critC, critD, acc, eva, mp);
-	}
-
-	private void setWolfStatsValue(int hp, int atk, int def, int critC, int critD, int acc, int eva, int mp) {
-		this.hitPoints = hp;
-		this.attack = atk;
-		this.defence = def;
-		this.critChance = critC;
-		this.critDamage = critD;
-		this.accuracy = acc;
-		this.evasion = eva;
+		this.hitPoints += con * 10;
+		this.attack += str * 1.4;
+		this.defence += con * 0.6;
+		this.critChance += dex / 2;
+		this.critDamage += str / 4;
+		this.accuracy += dex;
+		this.evasion += dex / 2;
+		this.magicPower += inte;
 	}
 
 	public static FightingWolf getFightingWolf(Wolf wolf) {
@@ -106,9 +76,7 @@ public class FightingWolf {
 	public  Wolf getWolf(){
 		return this.wolf;
 	}
-	public WolfType getWolfType() {
-		return this.wolfType;
-	}
+
 	public Player getOwner() {
 		return this.owner;
 	}
@@ -154,7 +122,8 @@ public class FightingWolf {
 		this.opponentWolf = wolf;
 	}
 
-	public void onBattleStart() {
+	public abstract WolfType getWolfType();
 
-	}
+	public abstract void onBattleStart();
+
 }

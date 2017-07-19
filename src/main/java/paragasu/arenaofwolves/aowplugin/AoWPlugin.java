@@ -74,8 +74,13 @@ public class AoWPlugin extends JavaPlugin implements Listener {
 		if(event.getPlayer().getItemInHand().getType() == Material.NAME_TAG) {
 			if(event.getRightClicked().getType() == EntityType.WOLF) {
 				Bukkit.broadcastMessage("wolf clicked");
-				event.getRightClicked().setCustomName("てすと§c§l♥300");
 				event.getRightClicked().setCustomName(ChatColor.GREEN + "❘❘❘❘❘❘❘❘❘❘❘❘❘❘❘❘❘❘❘❘❘❘❘❘❘");
+			}
+		}
+		if(event.getPlayer().getItemInHand().getType() == Material.AIR) {
+			if(event.getRightClicked().getType() == EntityType.WOLF) {
+				FightingWolf fw = FightingWolf.getFightingWolf((Wolf)event.getRightClicked());
+				Bukkit.broadcastMessage("hp " + fw.getHitPoints() + "atk " + fw.getAttack() + "def " + fw.getDefence() + "critC " + fw.getCritChance() + "critD " + fw.getCritDamage() + "acc " + fw.getAccuracy() + "eva " + fw.getEvasion() + "mp " + fw.getmagicPower());
 			}
 		}
 	}

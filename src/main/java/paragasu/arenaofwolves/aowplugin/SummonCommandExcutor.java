@@ -25,12 +25,6 @@ public class SummonCommandExcutor implements CommandExecutor {
 			if(sender instanceof Player) {
 				if(args.length == 5) {
 					Player player = (Player) sender;
-					String wolfTypeName = args[4];
-					WolfType wolfType = WolfType.WYATT;
-					if(wolfType == null) {
-						AoWAPI.sendGameMessage(player, ChatColor.RED + "エラー：" +wolfTypeName + "は見つかりませんでした");
-						return true;
-					}
 					this.allocatedPoints = new ArrayList<Integer>();
 					for(int i = 0; i < 4; i++) {
 						String s = args[i];
@@ -57,23 +51,36 @@ public class SummonCommandExcutor implements CommandExecutor {
 						AoWAPI.sendGameMessage(player, ChatColor.YELLOW + "確認：割り振られたポイントの合計が60未満です。");
 					}
 					Wolf wolf = (Wolf) player.getWorld().spawnEntity(player.getLocation(), EntityType.WOLF);
-					FightingWolf fightingWolf = new FightingWolf(player, wolf, wolfType, allocatedPoints);
+					FightingWolf fightingWolf = null;
 					FightingWolf.fightingWolfSet.add(fightingWolf);
-					sender.sendMessage(ChatColor.AQUA + "オオカミの召喚に成功しました");
+					String wolfTypeName = args[4].toLowerCase();
+					WolfType wolfType = null;
+					switch(wolfTypeName) {
+						case "wyatt":
+							wolfType = WolfType.WYATT;
+							fightingWolf = new Wyatt(player, wolf, allocatedPoints);
+							break;
+					}
+					if(wolfType == null) {
+						AoWAPI.sendGameMessage(player, ChatColor.RED + "エラー：" + args[4] + "は見つかりませんでした");
+						return true;
+					}
+					FightingWolf.fightingWolfSet.add(fightingWolf);
+					AoWAPI.sendGameMessage(player, ChatColor.AQUA + "オオカミの召喚に成功しました");
 					String str = String.format("%2s", String.valueOf(fightingWolf.strength));
 					String con = String.format("%2s", String.valueOf(fightingWolf.constitution));
 					String inte = String.format("%2s", String.valueOf(fightingWolf.intelligence));
 					String dex = String.format("%2s", String.valueOf(fightingWolf.dexterity));
 
 					StringBuilder sb = new StringBuilder();
-					sb.append(ChatColor.GREEN).append("====================").append("\n")
+					sb.append(ChatColor.GREEN).append(ChatColor.BOLD).append("=================").append("\n")
 							.append(" ").append(fightingWolf.getWolfType().getColoredName()).append("\n")
 							.append("  ").append(ChatColor.RED).append(ChatColor.BOLD).append("STR   ").append(str).append("\n")
 							.append("  ").append(ChatColor.GOLD).append(ChatColor.BOLD).append("CON   ").append(con).append("\n")
 							.append("  ").append(ChatColor.LIGHT_PURPLE).append(ChatColor.BOLD).append("INT   ").append(inte).append("\n")
 							.append("  ").append(ChatColor.DARK_AQUA).append(ChatColor.BOLD).append("DEX   ").append(dex).append("\n")
-							.append(ChatColor.GREEN).append("====================");
-					sender.sendMessage(sb.toString()); //召喚したオオカミの情報を表示する
+							.append(ChatColor.GREEN).append(ChatColor.BOLD).append("=================");
+					sender.sendMessage(sb.toString());
 					return true;
 				}
 			}
