@@ -54,7 +54,7 @@ public class SummonCommandExcutor implements CommandExecutor {
 						AoWAPI.sendGameMessage(player, ChatColor.YELLOW + "確認：割り振られたポイントの合計が60未満です。");
 					}
 					String wolfTypeName = args[4];
-					WolfType wolfType = WolfType.getWolfTypefromString(wolfTypeName);
+					WolfType wolfType = WolfType.getWolfTypeFromString(wolfTypeName);
 					if(wolfType == null) {
 						AoWAPI.sendGameMessage(player, ChatColor.RED + "エラー：" + args[4] + "は見つかりませんでした");
 						return true;
