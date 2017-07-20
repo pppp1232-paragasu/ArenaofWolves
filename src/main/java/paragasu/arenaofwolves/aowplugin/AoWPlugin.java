@@ -22,6 +22,8 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
+import paragasu.arenaofwolves.aowplugin.fightingwolf.FightingWolf;
+
 public class AoWPlugin extends JavaPlugin implements Listener {
 
 	public static final World WORLD = Bukkit.getWorld("suika");

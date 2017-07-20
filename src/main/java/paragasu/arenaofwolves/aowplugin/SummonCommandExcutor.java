@@ -10,6 +10,10 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 
+import paragasu.arenaofwolves.aowplugin.fightingwolf.FightingWolf;
+import paragasu.arenaofwolves.aowplugin.fightingwolf.WolfType;
+import paragasu.arenaofwolves.aowplugin.fightingwolf.Wyatt;
+
 public class SummonCommandExcutor implements CommandExecutor {
 
 //	private int strength;
@@ -29,7 +33,7 @@ public class SummonCommandExcutor implements CommandExecutor {
 					for(int i = 0; i < 4; i++) {
 						String s = args[i];
 						if(s.matches("\\d+")) {
-							this.allocatedPoints.add(Integer.parseInt(s)); //NullPointerException
+							this.allocatedPoints.add(Integer.parseInt(s));
 						}
 						else{
 							AoWAPI.sendGameMessage(player, ChatColor.RED + "エラー：正しく数値を入力してください");
@@ -67,10 +71,10 @@ public class SummonCommandExcutor implements CommandExecutor {
 					}
 					FightingWolf.fightingWolfSet.add(fightingWolf);
 					AoWAPI.sendGameMessage(player, ChatColor.AQUA + "オオカミの召喚に成功しました");
-					String str = String.format("%2s", String.valueOf(fightingWolf.strength));
-					String con = String.format("%2s", String.valueOf(fightingWolf.constitution));
-					String inte = String.format("%2s", String.valueOf(fightingWolf.intelligence));
-					String dex = String.format("%2s", String.valueOf(fightingWolf.dexterity));
+					String str = String.format("%2s", String.valueOf(allocatedPoints.get(0)));
+					String con = String.format("%2s", String.valueOf(allocatedPoints.get(1)));
+					String inte = String.format("%2s", String.valueOf(allocatedPoints.get(2)));
+					String dex = String.format("%2s", String.valueOf(allocatedPoints.get(3)));
 
 					StringBuilder sb = new StringBuilder();
 					sb.append(ChatColor.GREEN).append(ChatColor.BOLD).append("=================").append("\n")

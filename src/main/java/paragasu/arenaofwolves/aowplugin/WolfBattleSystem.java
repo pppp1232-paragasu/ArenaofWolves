@@ -13,6 +13,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.util.Vector;
 
+import paragasu.arenaofwolves.aowplugin.fightingwolf.FightingWolf;
+
 public class WolfBattleSystem implements Listener{
 
 	@EventHandler

@@ -1,4 +1,4 @@
-package paragasu.arenaofwolves.aowplugin;
+package paragasu.arenaofwolves.aowplugin.fightingwolf;
 
 import java.util.ArrayList;
 

@@ -1,8 +1,8 @@
-package paragasu.arenaofwolves.aowplugin;
+package paragasu.arenaofwolves.aowplugin.fightingwolf;
 
 import org.bukkit.ChatColor;
 
-enum WolfType {
+public enum WolfType {
 	NORMAL {                     //仮
 		@Override
 		public String getColoredName() {
