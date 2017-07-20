@@ -3,9 +3,14 @@ package paragasu.arenaofwolves.aowplugin.fightingwolf;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Random;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Effect;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
+import org.bukkit.util.Vector;
 
 public abstract class FightingWolf {
 	public static HashSet<FightingWolf> fightingWolfSet = new HashSet<FightingWolf>();
@@ -128,6 +133,57 @@ public abstract class FightingWolf {
 
 	public void setOpponentWolf(Wolf wolf) {
 		this.opponentWolf = wolf;
+	}
+
+	public boolean damage(FightingWolf attacker) {
+		int aAccuracy = attacker.getAccuracy();
+		int vEvasion = this.getEvasion();
+		int hitChance = aAccuracy - vEvasion;
+		int aAttack = attacker.getAttack();
+		int vDefence = attacker.getDefence();
+		int aCritChance = attacker.getCritChance();
+		int aCritDamage = attacker.getCritDamage();
+		int vHitPoints = this.getHitPoints();
+		int vShield = this.getShield();
+		int damagePoints = 0;
+		Wolf attackerWolf = attacker.getWolf();
+		Wolf victimWolf = this.getWolf();
+		Random rnd = new Random();
+		if(rnd.nextInt(100) < hitChance) {
+			damagePoints = aAttack - vDefence;
+			if(damagePoints < 0) {
+				damagePoints = 0;
+			}
+			if(rnd.nextInt(100) < aCritChance) {
+				damagePoints *= 1.5;
+				damagePoints += aCritDamage;
+				attackerWolf.getWorld().playSound(attackerWolf.getLocation(), Sound.ENTITY_BLAZE_HURT, 100F, 1.5F);
+			}
+			if(vShield >= damagePoints) {
+				vShield -= damagePoints;
+			}else {
+				vHitPoints -= (damagePoints - vShield);
+			}
+		}else{
+			victimWolf.getWorld().playSound(attackerWolf.getLocation(), Sound.ENTITY_ARROW_SHOOT, 100F, 1F);
+			victimWolf.getWorld().playEffect(attackerWolf.getLocation(), Effect.SMOKE, 0, 3);
+			Vector attackerVector = attackerWolf.getLocation().toVector();
+			Vector knockBack = attackerVector.clone().normalize().multiply(0.004);
+			knockBack.setY(0.5D);
+
+			victimWolf.setVelocity(knockBack);
+
+			return false;
+		}
+		if(vHitPoints <= 0) {
+			vHitPoints = 0;
+			victimWolf.setHealth(0);
+		}else{
+			victimWolf.setHealth(victimWolf.getMaxHealth());
+		}
+		this.setHitPoints(vHitPoints);
+		Bukkit.broadcastMessage("HP " + String.valueOf(this.getHitPoints()));
+		return true;
 	}
 
 	public abstract WolfType getWolfType();

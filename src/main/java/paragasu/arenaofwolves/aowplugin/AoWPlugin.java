@@ -35,6 +35,7 @@ public class AoWPlugin extends JavaPlugin implements Listener {
 		getServer().getPluginManager().registerEvents(new MoveRoomSystem(), this);
 		getServer().getPluginManager().registerEvents(new WolfMatchSystem(), this);
 		getServer().getPluginManager().registerEvents(new SetWolfTypeOfPlayerSystem(), this);
+		getServer().getPluginManager().registerEvents(new EventListener(), this);
 //		getCommand("test").setExecutor(new AoWCommandExecutor());
 		getCommand("summonwolf").setExecutor(new SummonCommandExcutor());
 	}
