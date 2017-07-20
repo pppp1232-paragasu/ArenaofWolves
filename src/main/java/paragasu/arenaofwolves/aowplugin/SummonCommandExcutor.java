@@ -12,7 +12,6 @@ import org.bukkit.entity.Wolf;
 
 import paragasu.arenaofwolves.aowplugin.fightingwolf.FightingWolf;
 import paragasu.arenaofwolves.aowplugin.fightingwolf.WolfType;
-import paragasu.arenaofwolves.aowplugin.fightingwolf.Wyatt;
 
 public class SummonCommandExcutor implements CommandExecutor {
 
@@ -54,28 +53,22 @@ public class SummonCommandExcutor implements CommandExecutor {
 					else if(sum < 60) {
 						AoWAPI.sendGameMessage(player, ChatColor.YELLOW + "確認：割り振られたポイントの合計が60未満です。");
 					}
-					Wolf wolf = (Wolf) player.getWorld().spawnEntity(player.getLocation(), EntityType.WOLF);
-					FightingWolf fightingWolf = null;
-					FightingWolf.fightingWolfSet.add(fightingWolf);
-					String wolfTypeName = args[4].toLowerCase();
-					WolfType wolfType = null;
-					switch(wolfTypeName) {
-						case "wyatt":
-							wolfType = WolfType.WYATT;
-							fightingWolf = new Wyatt(player, wolf, allocatedPoints);
-							break;
-					}
+					String wolfTypeName = args[4];
+					WolfType wolfType = WolfType.getWolfTypefromString(wolfTypeName);
 					if(wolfType == null) {
 						AoWAPI.sendGameMessage(player, ChatColor.RED + "エラー：" + args[4] + "は見つかりませんでした");
 						return true;
 					}
+
+					Wolf wolf = (Wolf) player.getWorld().spawnEntity(player.getLocation(), EntityType.WOLF);
+					FightingWolf fightingWolf = FightingWolf.create(player, wolf, allocatedPoints, wolfType);
 					FightingWolf.fightingWolfSet.add(fightingWolf);
+
 					AoWAPI.sendGameMessage(player, ChatColor.AQUA + "オオカミの召喚に成功しました");
 					String str = String.format("%2s", String.valueOf(allocatedPoints.get(0)));
 					String con = String.format("%2s", String.valueOf(allocatedPoints.get(1)));
 					String inte = String.format("%2s", String.valueOf(allocatedPoints.get(2)));
 					String dex = String.format("%2s", String.valueOf(allocatedPoints.get(3)));
-
 					StringBuilder sb = new StringBuilder();
 					sb.append(ChatColor.GREEN).append(ChatColor.BOLD).append("=================").append("\n")
 							.append(" ").append(fightingWolf.getWolfType().getColoredName()).append("\n")

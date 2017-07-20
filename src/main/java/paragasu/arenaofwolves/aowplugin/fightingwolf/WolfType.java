@@ -29,5 +29,11 @@ public enum WolfType {
 		return name;
 	}
 
+	public static WolfType getWolfTypefromString(String str) {
+		String name = str.toUpperCase();
+		WolfType wolfType = WolfType.valueOf(name);
+		return wolfType;
+	}
+
 	public abstract String getColoredName();
 }

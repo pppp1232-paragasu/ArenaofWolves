@@ -16,7 +16,7 @@ public class Wyatt extends FightingWolf {
 	protected int evasion = 0;
 	protected int magicPower = 0;
 
-	public Wyatt(Player owner, Wolf wolf, ArrayList<Integer> allocatedPoints) {
+	Wyatt(Player owner, Wolf wolf, ArrayList<Integer> allocatedPoints) {
 		super(owner, wolf, allocatedPoints);
 	}
 
