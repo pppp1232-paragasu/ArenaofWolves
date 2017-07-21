@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -24,6 +25,8 @@ public abstract class FightingWolf {
 	protected int constitution;
 	protected int intelligence;
 	protected int dexterity;
+
+	protected int maxHitPoints;
 
 	protected int hitPoints;
 	protected int attack;
@@ -44,8 +47,10 @@ public abstract class FightingWolf {
 		this.intelligence = allocatedPoints.get(2);
 		this.dexterity = allocatedPoints.get(3);
 
-		this.hitPoints += constitution * 10;
-		this.attack += intelligence * 1.4;
+		this.maxHitPoints += constitution * 10;
+
+		this.hitPoints = maxHitPoints;
+		this.attack += strength * 1.4;
 		this.defence += constitution * 0.6;
 		this.critChance += dexterity / 2;
 		this.critDamage += strength / 4;
@@ -96,6 +101,11 @@ public abstract class FightingWolf {
 
 	public Wolf getOpponentWolf() {
 		return this.opponentWolf;
+	}
+
+
+	public int getMaxHitPoints() {
+		return this.maxHitPoints;
 	}
 
 
@@ -182,6 +192,13 @@ public abstract class FightingWolf {
 			victimWolf.setHealth(victimWolf.getMaxHealth());
 		}
 		this.setHitPoints(vHitPoints);
+		StringBuilder sb = new StringBuilder();
+		int healthBar = Math.round(this.hitPoints / 5);
+		for(int i = 0; i < healthBar; i++) {
+			sb.append("❘");
+		}
+		this.wolf.setCustomName(ChatColor.GREEN + sb.toString());
+
 		Bukkit.broadcastMessage("HP " + String.valueOf(this.getHitPoints()));
 		return true;
 	}
