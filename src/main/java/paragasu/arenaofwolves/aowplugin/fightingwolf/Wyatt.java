@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 
+
+
 public class Wyatt extends FightingWolf {
 
 //	protected int hitPoints = 200;
@@ -18,7 +20,8 @@ public class Wyatt extends FightingWolf {
 
 	Wyatt(Player owner, Wolf wolf, ArrayList<Integer> allocatedPoints) {
 		super(owner, wolf, allocatedPoints);
-		this.hitPoints += 200;
+		this.maxHitPoints += 100;
+		this.hitPoints = maxHitPoints;
 		this.attack += 10;
 		this.defence += 20;
 		this.critChance += 10;
@@ -26,6 +29,7 @@ public class Wyatt extends FightingWolf {
 		this.accuracy += 100;
 		this.evasion += 0;
 		this.magicPower += 0;
+		this.shield += 0;
 	}
 
 	@Override

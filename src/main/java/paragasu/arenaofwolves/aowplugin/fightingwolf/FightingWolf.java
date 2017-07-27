@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Sound;
@@ -47,17 +46,19 @@ public abstract class FightingWolf {
 		this.intelligence = allocatedPoints.get(2);
 		this.dexterity = allocatedPoints.get(3);
 
-		this.maxHitPoints += constitution * 10;
+		this.maxHitPoints += constitution * 5;
 
 		this.hitPoints = maxHitPoints;
-		this.attack += strength * 1.4;
-		this.defence += constitution * 0.6;
+		this.attack += strength * 1.5;
+		this.defence += constitution * 0.5;
 		this.critChance += dexterity / 2;
 		this.critDamage += strength / 4;
 		this.accuracy += dexterity;
 		this.evasion += dexterity / 2;
 		this.magicPower += intelligence;
 		fightingWolfSet.add(this);
+
+		this.wolf.setCustomNameVisible(true);
 	}
 
 	public static FightingWolf create(Player owner, Wolf wolf, ArrayList<Integer> allocatedPoints, WolfType wolfType) {
@@ -161,18 +162,22 @@ public abstract class FightingWolf {
 		Random rnd = new Random();
 		if(rnd.nextInt(100) < hitChance) {
 			damagePoints = aAttack - vDefence;
-			if(damagePoints < 0) {
-				damagePoints = 0;
-			}
 			if(rnd.nextInt(100) < aCritChance) {
 				damagePoints *= 1.5;
 				damagePoints += aCritDamage;
 				attackerWolf.getWorld().playSound(attackerWolf.getLocation(), Sound.ENTITY_BLAZE_HURT, 100F, 1.5F);
 			}
+			if(damagePoints < 0) {
+				damagePoints = 1;
+			}
 			if(vShield >= damagePoints) {
 				vShield -= damagePoints;
 			}else {
 				vHitPoints -= (damagePoints - vShield);
+				vShield -= damagePoints;
+				if(vShield < 0) {
+					vShield = 0;
+				}
 			}
 		}else{
 			victimWolf.getWorld().playSound(attackerWolf.getLocation(), Sound.ENTITY_ARROW_SHOOT, 100F, 1F);
@@ -191,15 +196,25 @@ public abstract class FightingWolf {
 		}else{
 			victimWolf.setHealth(victimWolf.getMaxHealth());
 		}
+		this.shield = vShield;
 		this.setHitPoints(vHitPoints);
 		StringBuilder sb = new StringBuilder();
+		int maxHealthBar = Math.round(this.maxHitPoints / 5);
 		int healthBar = Math.round(this.hitPoints / 5);
-		for(int i = 0; i < healthBar; i++) {
+		int shieldBar = Math.round(this.shield / 5);
+		int hpBar = healthBar + shieldBar;
+		int maxBar = maxHealthBar + shieldBar;
+		sb.append(ChatColor.GREEN);
+		for(int i = 0; i < maxBar; i++) {
+			if(i == healthBar) {
+				sb.append(ChatColor.AQUA);
+			}
+			if(i == hpBar) {
+				sb.append(ChatColor.GRAY);
+			}
 			sb.append("❘");
 		}
-		this.wolf.setCustomName(ChatColor.GREEN + sb.toString());
-
-		Bukkit.broadcastMessage("HP " + String.valueOf(this.getHitPoints()));
+		this.wolf.setCustomName(ChatColor.BOLD + "" + (this.getHitPoints() + this.getShield()) + " "  + ChatColor.RESET + sb.toString());
 		return true;
 	}
 
