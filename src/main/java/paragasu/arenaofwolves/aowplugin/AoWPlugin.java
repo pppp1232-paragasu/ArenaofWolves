@@ -16,24 +16,20 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
 
 import paragasu.arenaofwolves.aowplugin.fightingwolf.FightingWolf;
 
 public class AoWPlugin extends JavaPlugin implements Listener {
 
-	public static final World WORLD = Bukkit.getWorld("suika");
+	public static final World WORLD = Bukkit.getWorld("aow");
 	public static int count;
 
 	public void onEnable() {
 		getServer().getPluginManager().registerEvents(this, this);
 		getServer().getPluginManager().registerEvents(new WolfBattleSystem(), this);
 		getServer().getPluginManager().registerEvents(new MoveRoomSystem(), this);
-		getServer().getPluginManager().registerEvents(new WolfMatchSystem(), this);
 		getServer().getPluginManager().registerEvents(new SetWolfTypeOfPlayerSystem(), this);
 		getServer().getPluginManager().registerEvents(new EventListener(), this);
 //		getCommand("test").setExecutor(new AoWCommandExecutor());
@@ -43,6 +39,9 @@ public class AoWPlugin extends JavaPlugin implements Listener {
 	@EventHandler
 	public void test(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
+        if (event.getHand() == EquipmentSlot.OFF_HAND) {
+            return;
+        }
 		if(event.getAction() == Action.RIGHT_CLICK_AIR && player.getItemInHand().getType() == Material.STICK) {
 			List<Entity> nearbyEntities = player.getNearbyEntities(2D, 2D, 2D);
 			if(nearbyEntities.get(0).getType() == EntityType.WOLF && nearbyEntities.get(1).getType() == EntityType.WOLF) {
@@ -59,12 +58,7 @@ public class AoWPlugin extends JavaPlugin implements Listener {
 		}
 
 		if(event.getAction() == Action.RIGHT_CLICK_AIR && player.getItemInHand().getType() == Material.BLAZE_POWDER) {
-			ScoreboardManager manager = Bukkit.getScoreboardManager();
-			Scoreboard board = manager.getNewScoreboard();
-			Objective objective = board.registerNewObjective("test", "test1");
-			objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
-			objective.setDisplayName("aaaaa");
-			player.setScoreboard(board);
+			DebugStage.getInstance().playerReset();
 		}
 
 		if(event.getAction() == Action.RIGHT_CLICK_AIR && player.getItemInHand().getType() == Material.STRING) {
